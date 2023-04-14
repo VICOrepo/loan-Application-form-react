@@ -1,5 +1,7 @@
 import {Container,TextField,InputAdornment,Paper,Grid,InputLabel,OutlinedInput,FormControl,Input,FormHelperText,} from "@mui/material";
 import * as Yup from "yup";
+
+
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -254,19 +256,19 @@ const App = () => {
      <FormControl >
       {/* <InputLabel>Loan Purpose</InputLabel> */}
      <TextField
-        label="Last Name" 
+        label="DOB" 
         variant="outlined"
-        placeholder="e.g, Malkova"
-        id="LastName"
-        name="LastName"
+        placeholder="MM/DD/YYYY"
+        id="DOB"
+        name="DOB"
         // style={{width:100}}
         inputProps={{ maxLength: 5 }}
-        value={formik.values.LastName}
+        value={formik.values.DOB}
         onChange={formik.handleChange}
         onBlur={formik.handleBlur}
-        error={formik.touched.LastName && Boolean(formik.errors.LastName)}
+        error={formik.touched.DOB && Boolean(formik.errors.DOB)}
         required
-        helperText={formik.touched.LastName && formik.errors.LastName}
+        helperText={formik.touched.DOB && formik.errors.DOB}
        
       />
       </FormControl>    
@@ -274,7 +276,8 @@ const App = () => {
 
       <Grid item xs = {4}>
       {/* <InputLabel>Loan Purpose</InputLabel> */}
-     <TextField
+      <FormControl >
+      <TextField
         label="Email" 
         variant="outlined"
         placeholder="e.g, minukori@gmail.com"
@@ -287,8 +290,10 @@ const App = () => {
         error={formik.touched.Email && Boolean(formik.errors.Email)}
         required
         helperText={formik.touched.Email && formik.errors.Email}
-       fullWidth
+       
       />
+      </FormControl>
+    
      </Grid>
   </Grid>
          
