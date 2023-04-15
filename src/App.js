@@ -1,12 +1,14 @@
-import {Container,TextField,InputAdornment,Paper,Grid,InputLabel,OutlinedInput,FormControl,Input,FormHelperText,} from "@mui/material";
+import {Container,TextField,minWidth,MenuItem,Button,InputAdornment,Grid,InputLabel,OutlinedInput,FormControl,Input,FormHelperText, Select,} from "@mui/material";
 import * as Yup from "yup";
-
+import { Link, Redirect } from 'react-router-dom';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { useFormik } from "formik"; 
+import moment from 'moment';
 
 
 const validationSchema = Yup.object({
@@ -14,7 +16,7 @@ const validationSchema = Yup.object({
     .typeError("*Only Numbers are allowed ")
     .min(2000.0, "*Loan Amount should be between $2000 and $20000")
     .max(20000.0, "*Loan Amount should be between $2000 and $20000")
-    .required("*Field Should'nt be empty"),
+    .required("*Field shouldn't be empty"),
 
   LoanPurpose: Yup.string()
     .min(5, "*Min length is 5 character")
@@ -71,7 +73,7 @@ const validationSchema = Yup.object({
     .typeError("*Only Numbers are allowed ")
     .min(2.0, "*Annual Amount should be between $2 and $200000")
     .max(200000.0, "*Loan Amount should be between $2000 and $20000")
-    .required("*Field Should'nt be empty"),
+    .required("*Field shouldn't be empty"),
 
     Emptype: Yup.string()
     .min(2, "*Min length is 2 character")
@@ -86,6 +88,13 @@ const validationSchema = Yup.object({
 
     EmpPhone:Yup.string()
     .matches(/^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/, 'Phone number is not valid')
+    .required("*Field shouldn't be empty"),
+
+    State:Yup.string()
+    .required("*Field shouldn't be empty"),
+
+    City:Yup.string()
+    .matches(/^[a-zA-Z ]*$/, "*Special Character not allowed")
     .required("*Field shouldn't be empty"),
 });
 
@@ -111,6 +120,8 @@ const App = () => {
       EmpPhone:"",
       Emptype:"",
       Empname:"",
+      State:"",
+      City:"",
     },
     validationSchema: validationSchema,
   });
@@ -123,7 +134,7 @@ const App = () => {
        <br/>
  <Grid container direction="column" alignItems="left">
         <Grid item xs = {4}>
-      <FormControl fullWidth={true} >
+      <FormControl sx={{minWidth:500}} size="normal" >
       {/* <InputLabel>Loan Amount</InputLabel> */}
       <TextField 
         label="Loan Amount"
@@ -152,7 +163,7 @@ const App = () => {
         </Grid>
         <br/>
    <Grid item xs = {4}>
-        <FormControl fullWidth={true}>
+        <FormControl sx={{minWidth:500}} size="normal">
       {/* <InputLabel>Loan Purpose</InputLabel> */}
      <TextField
         label="Loan Purpose" 
@@ -181,7 +192,7 @@ const App = () => {
    <Grid container direction="row" alignItems="center">
 
     <Grid item xs = {4}>
-    <FormControl >
+    <FormControl  >
       {/* <InputLabel>Loan Purpose</InputLabel> */}
      <TextField
         label="First Name" 
@@ -253,24 +264,52 @@ const App = () => {
   <Grid container direction="row" alignItems="center">
     
     <Grid item xs = {4}>
-     <FormControl >
+     <FormControl sx={{minWidth:100}} size="small">
       {/* <InputLabel>Loan Purpose</InputLabel> */}
-     <TextField
-        label="DOB" 
-        variant="outlined"
-        placeholder="MM/DD/YYYY"
-        id="DOB"
-        name="DOB"
-        // style={{width:100}}
-        inputProps={{ maxLength: 5 }}
-        value={formik.values.DOB}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.DOB && Boolean(formik.errors.DOB)}
-        required
-        helperText={formik.touched.DOB && formik.errors.DOB}
-       
+
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+      label="Date of Birth" 
+      variant="outlined"
+      // placeholder=""
+      id="DOB"
+      name="DOB"
+      // style={{width:100}}
+      // inputProps={{ maxLength: 5 }}
+      value={formik.values.DOB}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched.DOB && Boolean(formik.errors.DOB)}
+      required
+      helperText={formik.touched.DOB && formik.errors.DOB}
       />
+    </LocalizationProvider>
+      {/* <DatePicker
+        renderInput={(props) => (
+          <TextField
+            style={{width:"67%"}}
+            size="normal"
+            margin="normal"
+            variant="outlined"
+            required
+            {...props}
+            error={formik.touched.dob && Boolean(formik.errors.dob)}
+    helperText={formik.touched.dob && formik.errors.dob}
+          />
+        )}
+        name="dob"
+        label="DOB"
+        value={formik.values.dob}
+        maxDate={moment(new Date())}
+        minDate={moment(new Date("08.15.1947"))}
+        onChange={(newValue) => {
+          formik.setFieldTouched("dob");
+          formik.setFieldValue(
+            "dob",moment(newValue)
+          );
+        }}
+        onKeyPress={() => formik.setFieldTouched("dob")}
+      /> */}
       </FormControl>    
       </Grid>
 
@@ -442,21 +481,82 @@ const App = () => {
         </Grid>
         <br/>
      <Grid item xs = {4}>
-        <FormControl >
-      {/* <InputLabel>Loan Purpose</InputLabel> */}
-     <TextField
-        label="State" 
-        variant="outlined"
-        placeholder="USA states"
-        id="State"
-        name="State"
-        inputProps={{ maxLength: 200 }}
-        value={formik.values.State}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.State && Boolean(formik.errors.State)}
-        required
-        helperText={formik.touched.State && formik.errors.State}/>
+        <FormControl sx={{minWidth:234}} size="normal">
+      <InputLabel>State</InputLabel>
+     <Select
+     label="State" 
+     variant="outlined"
+     placeholder="USA states"
+     id="State"
+     name="State"
+    //  inputProps={{ maxLength: 200 }}
+     value={formik.values.State}
+     onChange={formik.handleChange}
+     onBlur={formik.handleBlur}
+     error={formik.touched.State && Boolean(formik.errors.State)}
+     required
+     helperText={formik.touched.State && formik.errors.State}>
+      <MenuItem value="AL">AL - Alabama</MenuItem>
+          <MenuItem value="AK">AK - Alaska</MenuItem>
+          <MenuItem value="AS">AS - American Samoa</MenuItem>
+          <MenuItem value="AZ">AZ - Arizona</MenuItem>
+          <MenuItem value="AR">AR - Arkansas</MenuItem>
+          <MenuItem value="CA">CA - California</MenuItem>
+          <MenuItem value="CO">CO - Colorado</MenuItem>
+          <MenuItem value="CT">CT - Connecticut</MenuItem>
+          <MenuItem value="DE">DE - Delaware</MenuItem>
+          <MenuItem value="DC">DC - District of Columbia</MenuItem>
+          <MenuItem value="FM">FM - Federated States of Micronesia</MenuItem>
+          <MenuItem value="FL">FL - Florida</MenuItem>
+          <MenuItem value="GA">GA - Georgia</MenuItem>
+          <MenuItem value="GU">GU - Guam</MenuItem>
+          <MenuItem value="HI">HI - Hawaii</MenuItem>
+          <MenuItem value="ID">ID - Idaho</MenuItem>
+          <MenuItem value="IL">IL - Illinois</MenuItem>
+          <MenuItem value="IN">IN - Indiana</MenuItem>
+          <MenuItem value="IA">IA - Iowa</MenuItem>
+          <MenuItem value="KS">KS - Kansas</MenuItem>
+          <MenuItem value="KY">KY - Kentucky</MenuItem>
+          <MenuItem value="LA">LA - Louisiana</MenuItem>
+          <MenuItem value="ME">ME - Maine</MenuItem>
+          <MenuItem value="MH">MH - Marshall Islands</MenuItem>
+          <MenuItem value="MD">MD - Maryland</MenuItem>
+          <MenuItem value="MA">MA - Massachusetts</MenuItem>
+          <MenuItem value="MI">MI - Michigan</MenuItem>
+          <MenuItem value="MN">MN - Minnesota</MenuItem>
+          <MenuItem value="MS">MS - Mississippi</MenuItem>
+          <MenuItem value="MO">MO - Missouri</MenuItem>
+          <MenuItem value="MT">MT - Montana</MenuItem>
+          <MenuItem value="NE">NE - Nebraska</MenuItem>
+          <MenuItem value="NV">NV - Nevada</MenuItem>
+          <MenuItem value="NH">NH - New Hampshire</MenuItem>
+          <MenuItem value="NJ">NJ - New Jersey</MenuItem>
+          <MenuItem value="NM">NM - New Mexico</MenuItem>
+          <MenuItem value="NY">NY - New York</MenuItem>
+          <MenuItem value="NC">NC - North Carolina</MenuItem>
+          <MenuItem value="ND">ND - North Dakota</MenuItem>
+          <MenuItem value="MP">MP - Northern Mariana Islands</MenuItem>
+          <MenuItem value="OH">OH - Ohio</MenuItem>
+          <MenuItem value="OK">OK - Oklahoma</MenuItem>
+          <MenuItem value="OR">OR - Oregon</MenuItem>
+          <MenuItem value="PW">PW - Palau</MenuItem>
+          <MenuItem value="PA">PA - Pennsylvania</MenuItem>
+          <MenuItem value="PR">PR - Puerto Rico</MenuItem>
+          <MenuItem value="RI">RI - Rhode Island</MenuItem>
+          <MenuItem value="SC">SC - South Carolina</MenuItem>
+          <MenuItem value="SD">SD - South Dakota</MenuItem>
+          <MenuItem value="TN">TN - Tennessee</MenuItem>
+          <MenuItem value="TX">TX - Texas</MenuItem>
+          <MenuItem value="UT">UT - Utah</MenuItem>
+          <MenuItem value="VT">VT - Vermont</MenuItem>
+          <MenuItem value="VI">VI - Virgin Islands</MenuItem>
+          <MenuItem value="VA">VA - Virginia</MenuItem>
+          <MenuItem value="WA">WA - Washington</MenuItem>
+          <MenuItem value="WV">WV - West Virginia</MenuItem>
+          <MenuItem value="WI">WI - Wisconsin</MenuItem>
+          <MenuItem value="WY">WY - Wyoming</MenuItem>
+     </Select>
+        
         {/* <FormHelperText
         id="LoanPurpose"
         error={formik.touched.LoanPurpose && Boolean(formik.errors.LoanPurpose)}>        
@@ -499,7 +599,7 @@ const App = () => {
      <TextField
         label="Residence Date" 
         variant="outlined"
-        placeholder="Date"
+        placeholder="MM/DD/YYYY"
         id="RDate"
         name="RDate"
         // style={{width:100}}
@@ -627,8 +727,18 @@ const App = () => {
   <br/>
   <br/>
   <br/>
- 
-  </Container>
+
+     <Grid item xs = {12} >
+      <FormControl fullWidth={true} alignItems="center" >
+      <Button  variant="contained" size="large"  onClick={() => <Link to={'/some-route'} />}>SUBMIT</Button>
+      </FormControl>
+         
+     </Grid>
+    
+  <br/>
+  <br/>
+  <br/>
+</Container>
     
   );
 };
