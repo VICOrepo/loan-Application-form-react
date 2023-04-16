@@ -1,6 +1,6 @@
-import {Container,TextField,minWidth,MenuItem,Button,InputAdornment,Grid,InputLabel,OutlinedInput,FormControl,Input,FormHelperText, Select,} from "@mui/material";
+import {Container,TextField,Button,minWidth,MenuItem,InputAdornment,Grid,InputLabel,OutlinedInput,FormControl,Input,FormHelperText, Select,} from "@mui/material";
 import * as Yup from "yup";
-import { Link, Redirect } from 'react-router-dom';
+import { Route,Routes } from 'react-router-dom';
 
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
@@ -9,6 +9,9 @@ import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import { useFormik } from "formik"; 
 import moment from 'moment';
+import Successfull from "./Component/Successfull";
+import { useNavigate } from "react-router-dom";
+import ButtonSubmit from "./Component/Button";
 
 
 const validationSchema = Yup.object({
@@ -96,7 +99,11 @@ const validationSchema = Yup.object({
     City:Yup.string()
     .matches(/^[a-zA-Z ]*$/, "*Special Character not allowed")
     .required("*Field shouldn't be empty"),
-});
+
+    DOB: Yup.string()
+    .required("*Field shouldn't be empty"),
+  
+  });
 
 
 const App = () => {
@@ -122,6 +129,8 @@ const App = () => {
       Empname:"",
       State:"",
       City:"",
+      DOB:"",
+      Button:"",
     },
     validationSchema: validationSchema,
   });
@@ -269,47 +278,45 @@ const App = () => {
 
       <LocalizationProvider dateAdapter={AdapterDayjs}>
       <DatePicker
-      label="Date of Birth" 
-      variant="outlined"
-      // placeholder=""
-      id="DOB"
-      name="DOB"
-      // style={{width:100}}
-      // inputProps={{ maxLength: 5 }}
-      value={formik.values.DOB}
-      onChange={formik.handleChange}
-      onBlur={formik.handleBlur}
-      error={formik.touched.DOB && Boolean(formik.errors.DOB)}
-      required
-      helperText={formik.touched.DOB && formik.errors.DOB}
-      />
-    </LocalizationProvider>
-      {/* <DatePicker
-        renderInput={(props) => (
-          <TextField
-            style={{width:"67%"}}
-            size="normal"
-            margin="normal"
-            variant="outlined"
-            required
-            {...props}
-            error={formik.touched.dob && Boolean(formik.errors.dob)}
-    helperText={formik.touched.dob && formik.errors.dob}
-          />
-        )}
-        name="dob"
-        label="DOB"
-        value={formik.values.dob}
-        maxDate={moment(new Date())}
-        minDate={moment(new Date("08.15.1947"))}
-        onChange={(newValue) => {
-          formik.setFieldTouched("dob");
-          formik.setFieldValue(
-            "dob",moment(newValue)
-          );
-        }}
-        onKeyPress={() => formik.setFieldTouched("dob")}
-      /> */}
+        label="Date of Birth" 
+        variant="outlined"
+        placeholder=""
+        id="DOB"
+       name="DOB"
+         required
+         value={formik.values.DOB}
+         onChange={formik.handleChange}
+         onBlur={formik.handleBlur}
+  // inputProps={{ maxLength: 5 }}
+  // value={formik.values.DOB}
+  // onChange={formik.handleChange}
+  // onBlur={formik.handleBlur}
+  // error={formik.touched.DOB && Boolean(formik.errors.DOB)}
+  // required
+  // helperText={formik.touched.DOB && formik.errors.DOB} 
+  
+  />
+  
+   </LocalizationProvider>
+        
+        
+
+      {/* // label="Date of Birth" 
+      // variant="outlined"
+      // // placeholder=""
+      // id="DOB"
+      // name="DOB"
+      // // style={{width:100}}
+      // // inputProps={{ maxLength: 5 }}
+      // value={formik.values.DOB}
+      // onChange={formik.handleChange}
+      // onBlur={formik.handleBlur}
+      // error={formik.touched.DOB && Boolean(formik.errors.DOB)}
+      // required
+      // helperText={formik.touched.DOB && formik.errors.DOB} */}
+      
+   
+     
       </FormControl>    
       </Grid>
 
@@ -594,24 +601,52 @@ const App = () => {
     <Grid container direction="row" alignItems="center">
     
     <Grid item xs = {4}>
-     <FormControl >
+     <FormControl sx={{minWidth:100}} size="small">
       {/* <InputLabel>Loan Purpose</InputLabel> */}
-     <TextField
-        label="Residence Date" 
-        variant="outlined"
-        placeholder="MM/DD/YYYY"
-        id="RDate"
-        name="RDate"
-        // style={{width:100}}
-        inputProps={{ maxLength: 5 }}
-        value={formik.values.RDate}
-        onChange={formik.handleChange}
-        onBlur={formik.handleBlur}
-        error={formik.touched.RDate && Boolean(formik.errors.RDate)}
-        required
-        helperText={formik.touched.RDate && formik.errors.RDate}
-       
+
+      <LocalizationProvider dateAdapter={AdapterDayjs}>
+      <DatePicker
+      label="Residence Date" 
+      variant="outlined"
+      // placeholder=""
+      id="RDate"
+      name="RDate"
+      // style={{width:100}}
+      // inputProps={{ maxLength: 5 }}
+      value={formik.values.RDate}
+      onChange={formik.handleChange}
+      onBlur={formik.handleBlur}
+      error={formik.touched.RDate && Boolean(formik.errors.RDate)}
+      required
+      helperText={formik.touched.RDate && formik.errors.RDate}
       />
+    </LocalizationProvider>
+      {/* <DatePicker
+        renderInput={(props) => (
+          <TextField
+            style={{width:"67%"}}
+            size="normal"
+            margin="normal"
+            variant="outlined"
+            required
+            {...props}
+            error={formik.touched.dob && Boolean(formik.errors.dob)}
+    helperText={formik.touched.dob && formik.errors.dob}
+          />
+        )}
+        name="dob"
+        label="DOB"
+        value={formik.values.dob}
+        maxDate={moment(new Date())}
+        minDate={moment(new Date("08.15.1947"))}
+        onChange={(newValue) => {
+          formik.setFieldTouched("dob");
+          formik.setFieldValue(
+            "dob",moment(newValue)
+          );
+        }}
+        onKeyPress={() => formik.setFieldTouched("dob")}
+      /> */}
       </FormControl>    
       </Grid>
 
@@ -727,17 +762,30 @@ const App = () => {
   <br/>
   <br/>
   <br/>
-
-     <Grid item xs = {12} >
+  <Grid item xs = {12} >
       <FormControl fullWidth={true} alignItems="center" >
-      <Button  variant="contained" size="large"  onClick={() => <Link to={'/some-route'} />}>SUBMIT</Button>
+      <>
+      <Button  variant="contained" size="large"  >SUBMIT</Button>
+      </>
       </FormControl>
          
      </Grid>
-    
+     {/* <Grid item xs = {12} >
+      <FormControl fullWidth={true} alignItems="center" >
+        {/* <ButtonSubmit/> */}
+      {/* </FormControl>
+         
+     </Grid>
+     */}
+     {/* <>
+     <Routes>
+          <Route path="Successfull" element={<Successfull/>}/>
+        </Routes>
+     </> */}
   <br/>
   <br/>
   <br/>
+
 </Container>
     
   );

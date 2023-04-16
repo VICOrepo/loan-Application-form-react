@@ -7,12 +7,17 @@ import Header from './Component/Header';
 import { Container, Grid, Paper } from '@mui/material';
 import LoanPurpose from './Component/LoanPurpose';
 import Button from './Component/Button';
+import SSN from './Component/SSN';
+import ButtonSubmit from './Component/Button';
+
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
     <Header/>
     <App/>
+    {/* <ButtonSubmit/> */}
+
     
    
   </React.StrictMode>
