@@ -9,17 +9,18 @@ import LoanPurpose from './Component/LoanPurpose';
 import Button from './Component/Button';
 import SSN from './Component/SSN';
 import ButtonSubmit from './Component/Button';
+import { BrowserRouter } from 'react-router-dom';
 
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
+    <BrowserRouter>
     <Header/>
     <App/>
-    {/* <ButtonSubmit/> */}
-
+    </BrowserRouter>
     
-   
+    {/* <ButtonSubmit/> */}
   </React.StrictMode>
 );
 
