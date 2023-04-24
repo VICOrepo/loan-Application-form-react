@@ -5,10 +5,8 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import Header from './Component/Header';
 import { Container, Grid, Paper } from '@mui/material';
-import LoanPurpose from './Component/LoanPurpose';
-import Button from './Component/Button';
-import SSN from './Component/SSN';
-import ButtonSubmit from './Component/Button';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+
 import { BrowserRouter } from 'react-router-dom';
 
 
